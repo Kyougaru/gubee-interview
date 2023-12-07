@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    image: gubee/interview-postgres-it
+    container_name: some-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+  web:
+    image: gubee/interview
+    container_name: backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=postgres
+      - DB_HOSTNAME=db
+      - DB_PORT=5432
+      - DB_USERNAME=gubee
+      - DB_PWD=gubee
