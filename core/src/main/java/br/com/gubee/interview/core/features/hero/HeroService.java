@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class HeroService {
     @Autowired
-    private HeroRepository repository;
+    HeroRepository repository;
 
     public HeroEntity findById(UUID id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));

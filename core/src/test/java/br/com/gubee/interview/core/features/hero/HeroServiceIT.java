@@ -39,7 +39,7 @@ public class HeroServiceIT {
 
     @Test
     void testFindById() {
-        PowerStatsEntity stats = new PowerStatsEntity(null, (short) 10, (short) 15, (short) 20, (short) 30, null, null);;
+        PowerStatsEntity stats = new PowerStatsEntity(null, (short) 10, (short) 15, (short) 20, (short) 30, null, null);
         PowerStatsEntity insertedStats = powerStatsService.insert(stats);
 
         HeroEntity hero = new HeroEntity(null, "Bruce", "HUMAN", insertedStats.getId(), true, null, null);
