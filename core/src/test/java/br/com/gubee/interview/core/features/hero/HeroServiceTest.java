@@ -1,6 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.core.entities.HeroEntity;
+import br.com.gubee.interview.core.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.model.Hero;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class HeroServiceTest {
     void init() {
         service.repository = repositoryStub;
 
-        sampleEntity = new HeroEntity(UUID.randomUUID(),
+        sampleEntity = new HeroEntity(null,
                 "Sample Hero",
                 "HUMAN",
                 UUID.randomUUID(),
@@ -31,29 +32,26 @@ class HeroServiceTest {
 
     @Test
     void findById() {
-        var heroId = UUID.randomUUID();
-        sampleEntity.setId(heroId);
-        repositoryStub.returnedHero = Optional.of(sampleEntity);
+        var inserted = service.insert(sampleEntity);
+        var result = service.findById(inserted.getId());
 
-        var result = service.findById(heroId);
-
-        assertEquals(heroId, result.getId());
+        assertEquals(inserted.getId(), result.getId());
+        assertNotNull(result.getId());
     }
 
     @Test
     void insert() {
         var result = service.insert(sampleEntity);
 
-        assertEquals(sampleEntity.getId(), result.getId());
+        assertNotNull(result.getId());
         assertEquals(sampleEntity.getName(), result.getName());
     }
 
     @Test
     void findByName() {
         var name = "Sample";
-        repositoryStub.returnedList = new ArrayList<>();
-        repositoryStub.returnedList.add(sampleEntity);
 
+        service.insert(sampleEntity);
         List<HeroEntity> result = service.findByName(name);
 
         assertTrue(result.get(0).getName().contains(name));
@@ -61,6 +59,8 @@ class HeroServiceTest {
 
     @Test
     void update() {
+        var inserted = service.insert(sampleEntity);
+
         var hero = new Hero(null,
                 "Super Man",
                 Hero.Race.ALIEN,
@@ -69,36 +69,43 @@ class HeroServiceTest {
                 null,
                 null);
 
-        service.update(sampleEntity, hero);
+        service.update(inserted, hero);
 
-        assertEquals(repositoryStub.returnedHero.get().getName(), "Super Man");
-        assertEquals(repositoryStub.returnedHero.get().getRace(), "ALIEN");
+        assertEquals(repositoryStub.heroes.get(inserted.getId()).getName(), "Super Man");
+        assertEquals(repositoryStub.heroes.get(inserted.getId()).getRace(), "ALIEN");
     }
 
     @Test
     void delete() {
-        var heroId = UUID.randomUUID();
-        service.delete(heroId);
+        var inserted = service.insert(sampleEntity);
+        service.delete(inserted.getId());
 
-        assertEquals(1, repositoryStub.deleteByIdInvocation);
+        assertThrows(ResourceNotFoundException.class, () -> service.findById(inserted.getId()));
     }
 }
 
 class HeroRepositoryStub implements HeroRepository {
-    int deleteByIdInvocation = 0;
-
-    Optional<HeroEntity> returnedHero = Optional.empty();
-    List<HeroEntity> returnedList = Collections.emptyList();
+    HashMap<UUID, HeroEntity> heroes = new HashMap<>();
 
     @Override
     public List<HeroEntity> findByNameContainingIgnoreCase(String name) {
-        return returnedList;
+        List<HeroEntity> matches = new ArrayList<>();
+        name = name.toLowerCase();
+
+        for (HeroEntity hero : heroes.values()) {
+            if (hero.getName().toLowerCase().contains(name))
+                matches.add(hero);
+        }
+
+        return matches;
     }
 
     @Override
     public <S extends HeroEntity> S save(S entity) {
-        returnedHero = Optional.of(entity);
-        return (S) returnedHero.get();
+        var generatedId = UUID.randomUUID();
+        heroes.put(generatedId, entity);
+        entity.setId(generatedId);
+        return entity;
     }
 
     @Override
@@ -108,13 +115,15 @@ class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public Optional<HeroEntity> findById(UUID uuid) {
-        return returnedHero;
+        if (heroes.containsKey(uuid)) {
+            return Optional.of(heroes.get(uuid));
+        }
+        return Optional.empty();
     }
 
     @Override
     public boolean existsById(UUID uuid) {
-        deleteByIdInvocation++;
-        return true;
+        return heroes.containsKey(uuid);
     }
 
     @Override
@@ -129,12 +138,12 @@ class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public long count() {
-        return 0;
+        return heroes.size();
     }
 
     @Override
     public void deleteById(UUID uuid) {
-
+        heroes.remove(uuid);
     }
 
     @Override

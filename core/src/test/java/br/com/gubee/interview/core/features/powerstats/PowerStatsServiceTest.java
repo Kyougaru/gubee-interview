@@ -1,12 +1,14 @@
 package br.com.gubee.interview.core.features.powerstats;
 
 import br.com.gubee.interview.core.entities.PowerStatsEntity;
+import br.com.gubee.interview.core.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.model.PowerStats;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,24 +34,24 @@ class PowerStatsServiceTest {
 
     @Test
     void findById() {
-        var powerId = UUID.randomUUID();
-        sampleEntity.setId(powerId);
-        repositoryStub.returnedPower = Optional.of(sampleEntity);
+        var inserted = service.insert(sampleEntity);
+        var result = service.findById(inserted.getId());
 
-        var result = service.findById(powerId);
-
-        assertEquals(powerId, result.getId());
+        assertEquals(inserted.getId(), result.getId());
+        assertNotNull(result.getId());
     }
 
     @Test
     void insert() {
         var result = service.insert(sampleEntity);
 
-        assertEquals(sampleEntity.getId(), result.getId());
+        assertNotNull(result.getId());
     }
 
     @Test
     void update() {
+        var inserted = service.insert(sampleEntity);
+
         var powerStats = new PowerStats(null,
                 (short) 20,
                 (short) 15,
@@ -58,29 +60,29 @@ class PowerStatsServiceTest {
                 null,
                 null);
 
-        service.update(sampleEntity, powerStats);
+        service.update(inserted, powerStats);
 
-        assertEquals(repositoryStub.returnedPower.get().getStrength(), (short) 20);
+        assertEquals(repositoryStub.powerStats.get(inserted.getId()).getStrength(), (short) 20);
     }
 
     @Test
     void delete() {
-        var powerId = UUID.randomUUID();
-        service.delete(powerId);
+        var inserted = service.insert(sampleEntity);
+        service.delete(inserted.getId());
 
-        assertEquals(1, repositoryStub.deleteByIdInvocation);
+        assertThrows(ResourceNotFoundException.class, () -> service.findById(inserted.getId()));
     }
 }
 
 class PowerStatsRepositoryStub implements PowerStatsRepository {
-    int deleteByIdInvocation = 0;
-
-    Optional<PowerStatsEntity> returnedPower = Optional.empty();
+    HashMap<UUID, PowerStatsEntity> powerStats = new HashMap<>();
 
     @Override
     public <S extends PowerStatsEntity> S save(S entity) {
-        returnedPower = Optional.of(entity);
-        return (S) returnedPower.get();
+        var generatedId = UUID.randomUUID();
+        powerStats.put(generatedId, entity);
+        entity.setId(generatedId);
+        return entity;
     }
 
     @Override
@@ -90,13 +92,15 @@ class PowerStatsRepositoryStub implements PowerStatsRepository {
 
     @Override
     public Optional<PowerStatsEntity> findById(UUID uuid) {
-        return returnedPower;
+        if (powerStats.containsKey(uuid)) {
+            return Optional.of(powerStats.get(uuid));
+        }
+        return Optional.empty();
     }
 
     @Override
     public boolean existsById(UUID uuid) {
-        deleteByIdInvocation++;
-        return true;
+        return powerStats.containsKey(uuid);
     }
 
     @Override
@@ -111,12 +115,12 @@ class PowerStatsRepositoryStub implements PowerStatsRepository {
 
     @Override
     public long count() {
-        return 0;
+        return powerStats.size();
     }
 
     @Override
     public void deleteById(UUID uuid) {
-
+        powerStats.remove(uuid);
     }
 
     @Override
