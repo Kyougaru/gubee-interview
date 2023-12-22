@@ -1,2 +1,10 @@
+br/com/gubee/interview/core/features/powerstats/PowerStatsServiceIT.class
+br/com/gubee/interview/core/features/hero/HeroServiceTest.class
+br/com/gubee/interview/core/stubs/PowerStatsRepositoryStub.class
+br/com/gubee/interview/core/features/hero/HeroControllerIT.class
+br/com/gubee/interview/core/stubs/HeroRepositoryStub.class
+br/com/gubee/interview/core/stubs/HeroServiceStub.class
+br/com/gubee/interview/core/features/powerstats/PowerStatsServiceTest.class
 br/com/gubee/interview/core/features/hero/HeroControllerTest.class
 br/com/gubee/interview/core/features/hero/HeroServiceIT.class
+br/com/gubee/interview/core/stubs/PowerStatsServiceStub.class

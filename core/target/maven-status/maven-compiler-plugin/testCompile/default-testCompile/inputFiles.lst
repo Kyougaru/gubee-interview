@@ -1,2 +1,10 @@
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/features/powerstats/PowerStatsServiceTest.java
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/features/hero/HeroServiceTest.java
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/stubs/PowerStatsRepositoryStub.java
 /home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/features/hero/HeroServiceIT.java
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/stubs/PowerStatsServiceStub.java
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/features/powerstats/PowerStatsServiceIT.java
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/features/hero/HeroControllerIT.java
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/stubs/HeroServiceStub.java
 /home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/features/hero/HeroControllerTest.java
+/home/gabriel/Imagens/interview-pleno/core/src/test/java/br/com/gubee/interview/core/stubs/HeroRepositoryStub.java

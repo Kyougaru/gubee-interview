@@ -3,7 +3,9 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
+    fabric8.io/git-commit: f8a6e6e981fbd8c6b95cb8bf689cd8f7ed73fae4
     fabric8.io/iconUrl: img/icons/spring-boot.svg
+    fabric8.io/git-branch: main
     fabric8.io/metrics-path: dashboard/file/kubernetes-pods.json/?var-project=interview-core&var-version=1.0.0-SNAPSHOT
     fabric8.io/scm-tag: HEAD
     fabric8.io/scm-url: https://github.com/spring-projects/spring-boot/interview/interview-core
@@ -24,10 +26,12 @@ spec:
   template:
     metadata:
       annotations:
-        fabric8.io/iconUrl: img/icons/spring-boot.svg
+        fabric8.io/git-commit: f8a6e6e981fbd8c6b95cb8bf689cd8f7ed73fae4
         fabric8.io/metrics-path: dashboard/file/kubernetes-pods.json/?var-project=interview-core&var-version=1.0.0-SNAPSHOT
-        fabric8.io/scm-tag: HEAD
         fabric8.io/scm-url: https://github.com/spring-projects/spring-boot/interview/interview-core
+        fabric8.io/iconUrl: img/icons/spring-boot.svg
+        fabric8.io/git-branch: main
+        fabric8.io/scm-tag: HEAD
       labels:
         app: interview-core
         provider: fabric8

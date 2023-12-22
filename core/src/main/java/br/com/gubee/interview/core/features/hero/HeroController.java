@@ -25,10 +25,10 @@ import java.util.UUID;
 @RequestMapping(value = "/heroes")
 public class HeroController {
     @Autowired
-    private HeroService heroService;
+    HeroService heroService;
 
     @Autowired
-    private PowerStatsService powerStatsService;
+    PowerStatsService powerStatsService;
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody Hero obj) {

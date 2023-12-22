@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class PowerStatsService {
     @Autowired
-    PowerStatsRepository repository;
+    protected PowerStatsRepository repository;
 
     public PowerStatsEntity findById(UUID id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
