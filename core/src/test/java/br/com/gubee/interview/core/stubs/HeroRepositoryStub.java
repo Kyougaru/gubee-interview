@@ -1,7 +1,7 @@
 package br.com.gubee.interview.core.stubs;
 
-import br.com.gubee.interview.core.entities.HeroEntity;
-import br.com.gubee.interview.core.features.hero.HeroRepository;
+import br.com.gubee.interview.core.adapter.out.persistence.entities.HeroEntity;
+import br.com.gubee.interview.core.adapter.out.persistence.HeroRepository;
 
 import java.util.*;
 

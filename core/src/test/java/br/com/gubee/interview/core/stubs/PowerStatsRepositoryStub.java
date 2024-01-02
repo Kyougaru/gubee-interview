@@ -1,7 +1,7 @@
 package br.com.gubee.interview.core.stubs;
 
-import br.com.gubee.interview.core.entities.PowerStatsEntity;
-import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
+import br.com.gubee.interview.core.adapter.out.persistence.entities.PowerStatsEntity;
+import br.com.gubee.interview.core.adapter.out.persistence.PowerStatsRepository;
 
 import java.util.HashMap;
 import java.util.Optional;

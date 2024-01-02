@@ -1,4 +1,4 @@
-package br.com.gubee.interview.core.dtos;
+package br.com.gubee.interview.core.adapter.in.web.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

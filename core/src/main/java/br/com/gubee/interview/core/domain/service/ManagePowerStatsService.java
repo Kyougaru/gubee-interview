@@ -1,10 +1,12 @@
 package br.com.gubee.interview.core.domain.service;
 
-import br.com.gubee.interview.core.adapter.out.persistence.entities.PowerStatsEntity;
-import br.com.gubee.interview.core.exceptions.ResourceNotFoundException;
-import br.com.gubee.interview.core.adapter.out.persistence.PowerStatsRepository;
+import br.com.gubee.interview.core.port.in.powerstats.ManagePowerStatsUseCase;
+import br.com.gubee.interview.core.port.out.powerstats.CreatePowerStatsPort;
+import br.com.gubee.interview.core.port.out.powerstats.DeletePowerStatsPort;
+import br.com.gubee.interview.core.port.out.powerstats.LoadPowerStatsPort;
+import br.com.gubee.interview.core.port.out.powerstats.UpdatePowerStatsPort;
 import br.com.gubee.interview.model.PowerStats;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -12,33 +14,37 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
-public class PowerStatsService {
-    @Autowired
-    protected PowerStatsRepository repository;
-
-    public PowerStatsEntity findById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+@RequiredArgsConstructor
+public class ManagePowerStatsService implements ManagePowerStatsUseCase {
+    private final LoadPowerStatsPort loadPowerStatsPort;
+    private final CreatePowerStatsPort createPowerStatsPort;
+    private final UpdatePowerStatsPort updatePowerStatsPort;
+    private final DeletePowerStatsPort deletePowerStatsPort;
+    
+    @Override
+    public PowerStats findById(UUID id) {
+        return loadPowerStatsPort.findById(id);
     }
 
-    public PowerStatsEntity insert(PowerStatsEntity entity) {
-        entity.setCreatedAt(Timestamp.from(Instant.now()));
-        entity.setUpdatedAt(Timestamp.from(Instant.now()));
-        return repository.save(entity);
+    @Override
+    public PowerStats insert(PowerStats powerStats) {
+        var instant = Timestamp.from(Instant.now());
+        powerStats.setCreatedAt(instant);
+        powerStats.setUpdatedAt(instant);
+
+        return createPowerStatsPort.insert(powerStats);
     }
 
-    public void update(PowerStatsEntity entity, PowerStats obj) {
-        entity.setStrength(obj.getStrength());
-        entity.setAgility(obj.getAgility());
-        entity.setDexterity(obj.getDexterity());
-        entity.setIntelligence(obj.getIntelligence());
-        entity.setUpdatedAt(Timestamp.from(Instant.now()));
-        repository.save(entity);
+    @Override
+    public void update(PowerStats updatedPowerStats, UUID id) {
+        var instant = Timestamp.from(Instant.now());
+        updatedPowerStats.setUpdatedAt(instant);
+
+        updatePowerStatsPort.update(updatedPowerStats, id);
     }
 
+    @Override
     public void delete(UUID id) {
-        if (!repository.existsById(id)) {
-            throw new ResourceNotFoundException(id);
-        }
-        repository.deleteById(id);
+        deletePowerStatsPort.deleteById(id);
     }
 }
