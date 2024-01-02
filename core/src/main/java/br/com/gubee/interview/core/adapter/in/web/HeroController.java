@@ -1,10 +1,11 @@
 package br.com.gubee.interview.core.features.hero;
 
+import br.com.gubee.interview.core.domain.service.HeroService;
 import br.com.gubee.interview.core.dtos.HeroComparisonDTO;
 import br.com.gubee.interview.core.dtos.PowerStatsDifferenceDTO;
 import br.com.gubee.interview.core.entities.HeroEntity;
 import br.com.gubee.interview.core.entities.PowerStatsEntity;
-import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
+import br.com.gubee.interview.core.domain.service.PowerStatsService;
 import br.com.gubee.interview.core.mappers.HeroMapper;
 import br.com.gubee.interview.core.mappers.PowerStatsMapper;
 import br.com.gubee.interview.core.util.URL;
