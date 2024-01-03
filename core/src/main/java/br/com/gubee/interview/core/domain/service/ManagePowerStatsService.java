@@ -1,6 +1,6 @@
 package br.com.gubee.interview.core.domain.service;
 
-import br.com.gubee.interview.core.port.in.powerstats.ManagePowerStatsUseCase;
+import br.com.gubee.interview.core.port.in.powerstats.*;
 import br.com.gubee.interview.core.port.out.powerstats.CreatePowerStatsPort;
 import br.com.gubee.interview.core.port.out.powerstats.DeletePowerStatsPort;
 import br.com.gubee.interview.core.port.out.powerstats.LoadPowerStatsPort;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ManagePowerStatsService implements ManagePowerStatsUseCase {
+public class ManagePowerStatsService implements FindByIdPowerStatsUseCase, InsertPowerStatsUseCase, UpdatePowerStatsUseCase, DeletePowerStatsUseCase {
     private final LoadPowerStatsPort loadPowerStatsPort;
     private final CreatePowerStatsPort createPowerStatsPort;
     private final UpdatePowerStatsPort updatePowerStatsPort;

@@ -1,6 +1,6 @@
 package br.com.gubee.interview.core.domain.service;
 
-import br.com.gubee.interview.core.port.in.hero.ManageHeroUseCase;
+import br.com.gubee.interview.core.port.in.hero.*;
 import br.com.gubee.interview.core.port.out.hero.CreateHeroPort;
 import br.com.gubee.interview.core.port.out.hero.DeleteHeroPort;
 import br.com.gubee.interview.core.port.out.hero.LoadHeroPort;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ManageHeroService implements ManageHeroUseCase {
+public class ManageHeroService implements FindByIdHeroUseCase, InsertHeroUseCase, FindByNameHeroUseCase, UpdateHeroUseCase, DeleteHeroUseCase {
     private final LoadHeroPort loadHeroPort;
     private final CreateHeroPort createHeroPort;
     private final UpdateHeroPort updateHeroPort;

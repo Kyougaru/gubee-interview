@@ -4,9 +4,6 @@ import br.com.gubee.interview.model.PowerStats;
 
 import java.util.UUID;
 
-public interface ManagePowerStatsUseCase {
-    PowerStats findById(UUID id);
-    PowerStats insert(PowerStats powerStats);
+public interface UpdatePowerStatsUseCase {
     void update(PowerStats updatedPowerStats, UUID id);
-    void delete(UUID id);
 }
