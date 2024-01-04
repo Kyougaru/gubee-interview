@@ -2,6 +2,8 @@ package br.com.gubee.interview.web.adapter;
 
 import br.com.gubee.interview.port.in.hero.*;
 import br.com.gubee.interview.web.adapter.dtos.HeroComparisonDTO;
+import br.com.gubee.interview.web.adapter.dtos.HeroDTO;
+import br.com.gubee.interview.web.adapter.mapper.HeroMapper;
 import br.com.gubee.interview.web.adapter.mapper.PowerStatsDifferenceDTOMapper;
 import br.com.gubee.interview.model.Hero;
 
@@ -25,7 +27,8 @@ public class HeroController {
     private final DeleteHeroUseCase deleteHeroUseCase;
 
     @PostMapping
-    public ResponseEntity<Void> insert(@Valid @RequestBody Hero obj) {
+    public ResponseEntity<Void> insert(@Valid @RequestBody HeroDTO objDto) {
+        var obj = HeroMapper.dtoToObj(objDto);
         obj = insertHeroUseCase.insert(obj);
         var uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -44,7 +47,8 @@ public class HeroController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@Valid @RequestBody Hero obj, @PathVariable UUID id) {
+    public ResponseEntity<Void> update(@Valid @RequestBody HeroDTO objDto, @PathVariable UUID id) {
+        var obj = HeroMapper.dtoToObj(objDto);
         updateHeroUseCase.update(obj, id);
         return ResponseEntity.noContent().build();
     }
